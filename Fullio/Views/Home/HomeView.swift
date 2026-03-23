@@ -10,6 +10,7 @@ struct HomeView: View {
     @State private var financeManager = FinanceManager()
     @State private var insightEngine = InsightEngine()
     @State private var showAddTransaction = false
+    @State private var showImport = false
 
     private var profile: UserProfile? { profiles.first }
 
@@ -51,17 +52,30 @@ struct HomeView: View {
                         .foregroundStyle(.fullioDarkGreen)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAddTransaction = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title3)
-                            .foregroundStyle(.fullioDarkGreen)
+                    HStack(spacing: FullioSpacing.sm) {
+                        Button {
+                            showImport = true
+                        } label: {
+                            Image(systemName: "doc.badge.arrow.up")
+                                .font(.title3)
+                                .foregroundStyle(.fullioDarkGreen)
+                        }
+
+                        Button {
+                            showAddTransaction = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title3)
+                                .foregroundStyle(.fullioDarkGreen)
+                        }
                     }
                 }
             }
             .sheet(isPresented: $showAddTransaction) {
                 AddTransactionView()
+            }
+            .sheet(isPresented: $showImport) {
+                ImportView()
             }
             .onAppear { refreshData() }
             .onChange(of: transactions.count) { refreshData() }

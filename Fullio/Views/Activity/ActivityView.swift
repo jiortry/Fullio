@@ -7,6 +7,7 @@ struct ActivityView: View {
     @State private var searchText = ""
     @State private var selectedFilter: ActivityFilter = .all
     @State private var showAddTransaction = false
+    @State private var showImport = false
 
     enum ActivityFilter: String, CaseIterable {
         case all = "Tutto"
@@ -79,17 +80,30 @@ struct ActivityView: View {
             .searchable(text: $searchText, prompt: "Cerca transazioni...")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAddTransaction = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title3)
-                            .foregroundStyle(.fullioDarkGreen)
+                    HStack(spacing: FullioSpacing.sm) {
+                        Button {
+                            showImport = true
+                        } label: {
+                            Image(systemName: "doc.badge.arrow.up")
+                                .font(.title3)
+                                .foregroundStyle(.fullioDarkGreen)
+                        }
+
+                        Button {
+                            showAddTransaction = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title3)
+                                .foregroundStyle(.fullioDarkGreen)
+                        }
                     }
                 }
             }
             .sheet(isPresented: $showAddTransaction) {
                 AddTransactionView()
+            }
+            .sheet(isPresented: $showImport) {
+                ImportView()
             }
         }
     }
@@ -181,21 +195,38 @@ struct ActivityView: View {
                 .font(FullioFont.headline())
                 .foregroundStyle(.fullioBlack)
 
-            Text("Aggiungi la tua prima spesa per iniziare")
+            Text("Aggiungi una spesa o importa un estratto conto")
                 .font(FullioFont.body(14))
                 .foregroundStyle(.fullioSecondaryText)
                 .multilineTextAlignment(.center)
 
-            Button {
-                showAddTransaction = true
-            } label: {
-                Text("Aggiungi transazione")
-                    .font(FullioFont.body().weight(.semibold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, FullioSpacing.xl)
+            VStack(spacing: FullioSpacing.sm) {
+                Button {
+                    showAddTransaction = true
+                } label: {
+                    Text("Aggiungi transazione")
+                        .font(FullioFont.body().weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: 280)
+                        .padding(.vertical, FullioSpacing.md)
+                        .background(Color.fullioDarkGreen)
+                        .clipShape(Capsule())
+                }
+
+                Button {
+                    showImport = true
+                } label: {
+                    HStack(spacing: FullioSpacing.sm) {
+                        Image(systemName: "doc.badge.arrow.up")
+                        Text("Importa estratto conto")
+                    }
+                    .font(FullioFont.body())
+                    .foregroundStyle(.fullioDarkGreen)
+                    .frame(maxWidth: 280)
                     .padding(.vertical, FullioSpacing.md)
-                    .background(Color.fullioDarkGreen)
+                    .background(Color.fullioLightGreen)
                     .clipShape(Capsule())
+                }
             }
 
             Spacer()

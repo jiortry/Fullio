@@ -8,6 +8,7 @@ struct ProfileView: View {
 
     @State private var showEditProfile = false
     @State private var showResetAlert = false
+    @State private var showImport = false
 
     private var profile: UserProfile? { profiles.first }
 
@@ -25,6 +26,8 @@ struct ProfileView: View {
 
                     subscriptionsSection
 
+                    importSection
+
                     dataSection
 
                     Spacer(minLength: 100)
@@ -37,6 +40,9 @@ struct ProfileView: View {
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showEditProfile) {
                 EditProfileView()
+            }
+            .sheet(isPresented: $showImport) {
+                ImportView()
             }
             .alert("Resettare tutti i dati?", isPresented: $showResetAlert) {
                 Button("Annulla", role: .cancel) {}
@@ -218,6 +224,67 @@ struct ProfileView: View {
                 .fullioCard()
             }
         }
+    }
+
+    // MARK: - Import
+
+    private var importSection: some View {
+        VStack(spacing: FullioSpacing.md) {
+            HStack {
+                Text("Dati")
+                    .font(FullioFont.headline(16))
+                    .foregroundStyle(.fullioBlack)
+                Spacer()
+            }
+
+            Button {
+                showImport = true
+            } label: {
+                HStack(spacing: FullioSpacing.md) {
+                    Image(systemName: "doc.badge.arrow.up")
+                        .font(.title3)
+                        .foregroundStyle(.fullioDarkGreen)
+                        .frame(width: 32)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Importa estratto conto")
+                            .font(FullioFont.body(14).weight(.medium))
+                            .foregroundStyle(.fullioBlack)
+                        Text("CSV, PDF, OFX, QFX, QIF")
+                            .font(FullioFont.caption(12))
+                            .foregroundStyle(.fullioSecondaryText)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.fullioNeutral)
+                }
+            }
+
+            Divider()
+
+            HStack(spacing: FullioSpacing.md) {
+                Image(systemName: "chart.bar.doc.horizontal")
+                    .font(.title3)
+                    .foregroundStyle(.fullioDarkGreen)
+                    .frame(width: 32)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Transazioni totali")
+                        .font(FullioFont.body(14))
+                        .foregroundStyle(.fullioSecondaryText)
+                }
+
+                Spacer()
+
+                Text("\(transactions.count)")
+                    .font(FullioFont.smallNumber(14))
+                    .foregroundStyle(.fullioBlack)
+            }
+        }
+        .fullioCard()
     }
 
     // MARK: - Data
