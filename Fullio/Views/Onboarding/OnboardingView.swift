@@ -306,16 +306,6 @@ struct OnboardingView: View {
         profile.savingsMode = savingsMode
         profile.hasCompletedOnboarding = true
 
-        if !Transaction.sampleTransactions.isEmpty {
-            for t in Transaction.sampleTransactions {
-                modelContext.insert(t)
-            }
-        }
-
-        for goal in SavingsGoal.sampleGoals {
-            modelContext.insert(goal)
-        }
-
         onComplete()
     }
 }
