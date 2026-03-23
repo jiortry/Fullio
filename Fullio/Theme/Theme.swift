@@ -18,6 +18,23 @@ extension Color {
     static let fullioLightBeige = Color(hex: "FAF8F4")
 }
 
+// Lets `.foregroundStyle(.fullio…)` and similar resolve when contextual type is `ShapeStyle`.
+extension ShapeStyle where Self == Color {
+    static var fullioDarkGreen: Color { Color.fullioDarkGreen }
+    static var fullioSoftGreen: Color { Color.fullioSoftGreen }
+    static var fullioBeige: Color { Color.fullioBeige }
+    static var fullioBlack: Color { Color.fullioBlack }
+    static var fullioWarning: Color { Color.fullioWarning }
+    static var fullioPositive: Color { Color.fullioPositive }
+    static var fullioNeutral: Color { Color.fullioNeutral }
+    static var fullioCardBackground: Color { Color.fullioCardBackground }
+    static var fullioBackground: Color { Color.fullioBackground }
+    static var fullioSecondaryText: Color { Color.fullioSecondaryText }
+    static var fullioLightGreen: Color { Color.fullioLightGreen }
+    static var fullioLightWarning: Color { Color.fullioLightWarning }
+    static var fullioLightBeige: Color { Color.fullioLightBeige }
+}
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: .alphanumerics.inverted)
