@@ -106,6 +106,8 @@ final class PDFStatementParser: StatementParserProtocol {
 
             let dateStr = String(line[dateRange])
             let description = String(line[descRange]).trimmingCharacters(in: .whitespaces)
+            // Esclude righe spurie estratte dal PDF (es. "1 /", "2 /" da tabelle o numerazione).
+            guard !description.contains("/") else { continue }
             let amountStr = String(line[amountRange])
 
             guard let date = parseDate(dateStr),
