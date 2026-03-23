@@ -81,11 +81,13 @@ final class PDFStatementParser: StatementParserProtocol {
     // MARK: - Line Parsing
 
     private func parseSingleLine(_ line: String) -> ParsedTransaction? {
+        // Ordine: prima il pattern con due date (valuta + contabile), altrimenti la regex
+        // "una data" cattura la seconda data come inizio descrizione al posto del nome operazione.
         let patterns: [(regex: String, dateGroup: Int, descGroup: Int, amountGroup: Int)] = [
-            // dd/MM/yyyy Description -1.234,56 or +1.234,56
-            (#"(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})\s+(.+?)\s+([+-]?\s*[\d.,]+(?:\s*€)?)\s*$"#, 1, 2, 3),
             // dd/MM/yyyy dd/MM/yyyy Description Amount (date valuta + date contabile)
             (#"(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})\s+\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4}\s+(.+?)\s+([+-]?\s*[\d.,]+(?:\s*€)?)\s*$"#, 1, 2, 3),
+            // dd/MM/yyyy Description -1.234,56 or +1.234,56
+            (#"(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})\s+(.+?)\s+([+-]?\s*[\d.,]+(?:\s*€)?)\s*$"#, 1, 2, 3),
             // dd/MM Description Amount
             (#"(\d{1,2}[/.\-]\d{1,2})\s+(.+?)\s+([+-]?\s*[\d.,]+(?:\s*€)?)\s*$"#, 1, 2, 3),
             // yyyy-MM-dd Description Amount
@@ -105,9 +107,9 @@ final class PDFStatementParser: StatementParserProtocol {
             }
 
             let dateStr = String(line[dateRange])
-            let description = String(line[descRange]).trimmingCharacters(in: .whitespaces)
+            let rawDescription = String(line[descRange]).trimmingCharacters(in: .whitespaces)
             // Esclude righe spurie estratte dal PDF (es. "1 /", "2 /" da tabelle o numerazione).
-            guard !description.contains("/") else { continue }
+            guard !rawDescription.contains("/") else { continue }
             let amountStr = String(line[amountRange])
 
             guard let date = parseDate(dateStr),
@@ -116,6 +118,7 @@ final class PDFStatementParser: StatementParserProtocol {
                 continue
             }
 
+            let description = sanitizePDFOperationDescription(rawDescription)
             guard description.count >= 2 else { continue }
 
             let isIncome = amount > 0 || CategoryMatcher.isLikelyIncome(description: description, amount: amount)
@@ -133,6 +136,38 @@ final class PDFStatementParser: StatementParserProtocol {
         }
 
         return nil
+    }
+
+    /// Rimuove dalla descrizione prefissi tipici degli estratti (es. "fino al …") e date residue
+    /// all'inizio, così il titolo mostra il nome dell'operazione e non una seconda data.
+    private func sanitizePDFOperationDescription(_ raw: String) -> String {
+        var s = raw.trimmingCharacters(in: .whitespaces)
+        guard !s.isEmpty else { return "" }
+
+        if let regex = try? NSRegularExpression(
+            pattern: #"(?i)^fino\s+al\s+\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4}\s*"#,
+            options: []
+        ) {
+            let range = NSRange(s.startIndex..., in: s)
+            if let match = regex.firstMatch(in: s, range: range),
+               let r = Range(match.range, in: s) {
+                s.removeSubrange(r)
+                s = s.trimmingCharacters(in: .whitespaces)
+            }
+        }
+
+        let leadingFullDate = #"^\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4}\s+"#
+        if let regex = try? NSRegularExpression(pattern: leadingFullDate, options: []) {
+            while true {
+                let range = NSRange(s.startIndex..., in: s)
+                guard let match = regex.firstMatch(in: s, range: range),
+                      let r = Range(match.range, in: s) else { break }
+                s.removeSubrange(r)
+                s = s.trimmingCharacters(in: .whitespaces)
+            }
+        }
+
+        return s.trimmingCharacters(in: .whitespaces)
     }
 
     // MARK: - Date Parsing
