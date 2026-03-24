@@ -1,0 +1,40 @@
+{
+  "colors": {
+    "darkGreen": "#0F3D2E",
+    "softGreen": "#5FAF8F",
+    "beige": "#F5F1E8",
+    "black": "#1C1C1C",
+    "warning": "#E57373",
+    "positive": "#5FAF8F",
+    "neutral": "#B8B0A2",
+    "cardBackground": "#FFFFFF",
+    "background": "#F5F1E8",
+    "secondaryText": "#8A8278",
+    "lightGreen": "#E8F5EE",
+    "lightWarning": "#FFF0F0",
+    "lightBeige": "#FAF8F4"
+  },
+  "fonts": {
+    "title": { "size": 28, "weight": "bold", "design": "rounded" },
+    "headline": { "size": 20, "weight": "semibold", "design": "rounded" },
+    "body": { "size": 16, "weight": "regular", "design": "rounded" },
+    "caption": { "size": 13, "weight": "medium", "design": "rounded" },
+    "number": { "size": 36, "weight": "bold", "design": "rounded" },
+    "smallNumber": { "size": 20, "weight": "semibold", "design": "monospaced" }
+  },
+  "spacing": {
+    "xs": 4,
+    "sm": 8,
+    "md": 16,
+    "lg": 24,
+    "xl": 32,
+    "xxl": 48
+  },
+  "radius": {
+    "sm": 12,
+    "md": 16,
+    "lg": 24,
+    "xl": 32,
+    "full": 100
+  }
+}

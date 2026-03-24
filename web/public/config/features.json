@@ -1,0 +1,15 @@
+{
+  "enableInsights": true,
+  "enableGoals": true,
+  "enableImport": true,
+  "enableProfile": true,
+  "enablePartnerMode": false,
+  "enableNotifications": true,
+  "enableWeeklyReport": true,
+  "enableSubscriptionAlert": true,
+  "enableImpulseWarning": true,
+  "enableSpendingStreaks": true,
+  "maxGoals": 10,
+  "maxTransactionsPerImport": 500,
+  "insightRefreshIntervalMinutes": 60
+}

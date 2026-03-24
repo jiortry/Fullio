@@ -1,0 +1,68 @@
+{
+  "greetings": [
+    "Ciao! Ecco il tuo riepilogo di oggi.",
+    "Bentornato! Vediamo come va.",
+    "Eccoti! Oggi si risparmia.",
+    "Ciao! Sei sulla buona strada."
+  ],
+  "emotionalMessages": {
+    "safeToSpend": {
+      "excellent": "Oggi sei in ottima forma! Puoi stare tranquillo.",
+      "good": "Sei in linea, continua così.",
+      "caution": "Attenzione, ma sei ancora in controllo.",
+      "tight": "Giornata stretta — piccoli gesti fanno la differenza."
+    },
+    "monthEnd": {
+      "positive": "Se continui così, a fine mese risparmi {amount}€",
+      "negative": "Attenzione: potresti chiudere il mese con {amount}€ in meno"
+    },
+    "weekend": {
+      "overAverage": "Weekend sopra la media — niente panico, puoi recuperare",
+      "underControl": "Weekend sotto controllo, ottimo lavoro!"
+    },
+    "improvement": {
+      "better": "Stai migliorando! Questa settimana hai speso meno.",
+      "same": "Costante come sempre — la stabilità è un superpotere.",
+      "worse": "Questa settimana hai speso un po' di più. Puoi migliorare."
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "activity": "Attività",
+    "goals": "Obiettivi",
+    "insights": "Insight",
+    "profile": "Profilo"
+  },
+  "spenderProfiles": {
+    "impulsive": {
+      "label": "Impulsivo",
+      "description": "Tendi a spendere d'impulso — piccole pause ti aiutano",
+      "icon": "bolt.fill"
+    },
+    "stable": {
+      "label": "Stabile",
+      "description": "Sei costante e prevedibile — ottima base",
+      "icon": "equal.circle.fill"
+    },
+    "saver": {
+      "label": "Risparmiatore",
+      "description": "Risparmi naturalmente — continua così",
+      "icon": "leaf.fill"
+    },
+    "emotional": {
+      "label": "Emotivo",
+      "description": "Le emozioni influenzano la spesa — riconoscerlo è il primo passo",
+      "icon": "heart.fill"
+    },
+    "social": {
+      "label": "Sociale",
+      "description": "Le uscite sociali pesano — bilancia con giornate leggere",
+      "icon": "person.2.fill"
+    },
+    "unknown": {
+      "label": "In analisi",
+      "description": "Sto ancora imparando i tuoi pattern",
+      "icon": "questionmark.circle.fill"
+    }
+  }
+}

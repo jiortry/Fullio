@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-fullio-beige text-fullio-black antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-black/5 p-6;
+  }
+  .btn-primary {
+    @apply bg-fullio-dark text-white px-6 py-3 rounded-xl font-semibold 
+           hover:bg-fullio-dark/90 transition-all duration-200 active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply bg-fullio-light-green text-fullio-dark px-6 py-3 rounded-xl font-semibold 
+           hover:bg-fullio-green/20 transition-all duration-200;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-fullio-neutral/30 bg-white
+           focus:outline-none focus:ring-2 focus:ring-fullio-green/50 focus:border-fullio-green
+           transition-all duration-200;
+  }
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
+           transition-all duration-200 hover:bg-fullio-light-green;
+  }
+  .sidebar-link-active {
+    @apply bg-fullio-dark text-white hover:bg-fullio-dark/90;
+  }
+}
+
+.code-editor {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  tab-size: 4;
+}
+
+.code-editor:focus {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B8B0A2;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8A8278;
+}

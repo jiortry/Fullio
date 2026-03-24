@@ -3,6 +3,8 @@ import SwiftData
 
 @main
 struct FullioApp: App {
+    @State private var configManager = RemoteConfigManager.shared
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Transaction.self,
@@ -21,6 +23,9 @@ struct FullioApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+                    await configManager.checkForUpdate()
+                }
         }
         .modelContainer(sharedModelContainer)
     }

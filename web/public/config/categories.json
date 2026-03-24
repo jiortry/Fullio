@@ -1,0 +1,18 @@
+{
+  "categories": [
+    { "key": "food", "label": "Cibo", "icon": "fork.knife", "isExpense": true },
+    { "key": "transport", "label": "Trasporti", "icon": "car.fill", "isExpense": true },
+    { "key": "entertainment", "label": "Svago", "icon": "gamecontroller.fill", "isExpense": true },
+    { "key": "shopping", "label": "Shopping", "icon": "bag.fill", "isExpense": true },
+    { "key": "health", "label": "Salute", "icon": "heart.fill", "isExpense": true },
+    { "key": "bills", "label": "Bollette", "icon": "doc.text.fill", "isExpense": true },
+    { "key": "subscriptions", "label": "Abbonamenti", "icon": "repeat", "isExpense": true },
+    { "key": "home", "label": "Casa", "icon": "house.fill", "isExpense": true },
+    { "key": "education", "label": "Formazione", "icon": "book.fill", "isExpense": true },
+    { "key": "travel", "label": "Viaggi", "icon": "airplane", "isExpense": true },
+    { "key": "transfers", "label": "Trasferimenti", "icon": "arrow.left.arrow.right", "isExpense": false },
+    { "key": "salary", "label": "Stipendio", "icon": "banknote.fill", "isExpense": false },
+    { "key": "income", "label": "Entrata", "icon": "plus.circle.fill", "isExpense": false },
+    { "key": "other", "label": "Altro", "icon": "ellipsis.circle.fill", "isExpense": true }
+  ]
+}

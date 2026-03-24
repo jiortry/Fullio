@@ -4,20 +4,37 @@ import SwiftData
 struct ContentView: View {
     @Query private var profiles: [UserProfile]
     @State private var hasCompletedOnboarding = false
+    @State private var showUpdateView = false
+    @State private var configManager = RemoteConfigManager.shared
 
     var body: some View {
-        Group {
-            if profiles.first?.hasCompletedOnboarding == true || hasCompletedOnboarding {
-                MainTabView()
-            } else {
-                OnboardingView {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        hasCompletedOnboarding = true
+        ZStack {
+            Group {
+                if profiles.first?.hasCompletedOnboarding == true || hasCompletedOnboarding {
+                    MainTabView()
+                } else {
+                    OnboardingView {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            hasCompletedOnboarding = true
+                        }
                     }
                 }
             }
+            .animation(.easeInOut, value: hasCompletedOnboarding)
+
+            if showUpdateView {
+                UpdateView(isPresented: $showUpdateView)
+                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                    .zIndex(100)
+            }
         }
-        .animation(.easeInOut, value: hasCompletedOnboarding)
+        .onChange(of: configManager.updateAvailable) { _, available in
+            if available {
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    showUpdateView = true
+                }
+            }
+        }
     }
 }
 
