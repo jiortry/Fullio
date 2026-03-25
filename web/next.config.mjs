@@ -1,15 +1,11 @@
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Include la copia .native nel bundle serverless (Vercel) per fs.readFile sulle API
+    // Path relativi alla root del progetto (cartella `web/`). Gli assoluti con __dirname
+    // su Vercel si concatenano di nuovo alla root → doppio `.../web/.../web/.native/...` (ENOENT).
     outputFileTracingIncludes: {
-      "/api/files": [path.join(__dirname, ".native", "fullio", "**", "*")],
-      "/api/files/[...path]": [path.join(__dirname, ".native", "fullio", "**", "*")],
+      "/api/files": ["./.native/fullio/**/*"],
+      "/api/files/[...path]": ["./.native/fullio/**/*"],
     },
   },
   async headers() {
