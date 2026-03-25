@@ -1,8 +1,32 @@
+import { existsSync } from "fs";
 import { promises as fs } from "fs";
 import path from "path";
 
 const CONFIG_DIR = path.join(process.cwd(), "public", "config");
-const SWIFT_DIR = path.join(process.cwd(), "..", "Fullio");
+
+/** Cartella Xcode con i .swift (sibling di `web/` nella repo). */
+const SWIFT_SOURCE_DIR = path.join(process.cwd(), "..", "Fullio");
+
+/** Copia usata su Vercel dopo `prebuild` (dentro `web/`, finisce nel deploy). */
+const SWIFT_BUNDLE_DIR = path.join(process.cwd(), ".native", "fullio");
+
+function getSwiftReadRoot(): string {
+  const onVercel = process.env.VERCEL === "1";
+  if (onVercel || !existsSync(SWIFT_SOURCE_DIR)) {
+    return SWIFT_BUNDLE_DIR;
+  }
+  return SWIFT_SOURCE_DIR;
+}
+
+function getSwiftWriteRoot(): string {
+  if (process.env.VERCEL === "1") {
+    throw new Error("Scrittura file Swift non supportata su Vercel (filesystem effimero). Usa git in locale.");
+  }
+  if (!existsSync(SWIFT_SOURCE_DIR)) {
+    throw new Error("Cartella sorgente Fullio non trovata.");
+  }
+  return SWIFT_SOURCE_DIR;
+}
 
 export type ConfigSection =
   | "version"
@@ -71,14 +95,16 @@ async function walkDir(dir: string, base: string): Promise<string[]> {
 }
 
 export async function listSwiftFiles() {
-  return walkDir(SWIFT_DIR, SWIFT_DIR);
+  const root = getSwiftReadRoot();
+  return walkDir(root, root);
 }
 
 export async function readSwiftFile(relativePath: string) {
   const safePath = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, "");
-  const fullPath = path.join(SWIFT_DIR, safePath);
+  const swiftRoot = getSwiftReadRoot();
+  const fullPath = path.join(swiftRoot, safePath);
 
-  if (!fullPath.startsWith(SWIFT_DIR)) {
+  if (!fullPath.startsWith(path.resolve(swiftRoot))) {
     throw new Error("Access denied: path traversal detected");
   }
 
@@ -91,9 +117,10 @@ export async function readSwiftFile(relativePath: string) {
 
 export async function writeSwiftFile(relativePath: string, content: string) {
   const safePath = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, "");
-  const fullPath = path.join(SWIFT_DIR, safePath);
+  const swiftRoot = getSwiftWriteRoot();
+  const fullPath = path.join(swiftRoot, safePath);
 
-  if (!fullPath.startsWith(SWIFT_DIR)) {
+  if (!fullPath.startsWith(path.resolve(swiftRoot))) {
     throw new Error("Access denied: path traversal detected");
   }
 

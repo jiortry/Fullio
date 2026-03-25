@@ -43,6 +43,11 @@ export async function PUT(
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to write file";
-    return NextResponse.json({ error: message }, { status: 400 });
+    const isVercel =
+      message.includes("Vercel") || message.includes("non supportata");
+    return NextResponse.json(
+      { error: message },
+      { status: isVercel ? 501 : 400 }
+    );
   }
 }

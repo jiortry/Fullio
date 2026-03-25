@@ -108,10 +108,11 @@ struct SpenderProfileConfig: Codable {
 final class RemoteConfigManager {
     static let shared = RemoteConfigManager()
 
+    /// URL del deploy Vercel (stessa repo, rootDirectory `web`). Sostituisci con il dominio del progetto.
     #if DEBUG
-    var baseURL = "http://localhost:3000"
+    var baseURL = "http://127.0.0.1:3000"
     #else
-    var baseURL = "https://your-fullio-server.vercel.app"
+    var baseURL = "https://TUO-PROGETTO.vercel.app"
     #endif
 
     private(set) var remoteVersion: RemoteVersion?
